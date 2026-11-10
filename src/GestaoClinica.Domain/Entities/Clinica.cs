@@ -3,6 +3,9 @@ using GestaoClinica.Domain.Entities.Base;
 namespace GestaoClinica.Domain.Entities;
 
 // O Id vem da classe Entity.
+// Commit do Iago
+// Commit do Guylherme
+
 public class Clinica : Entity
 {
     // Guardado sempre só com os 14 dígitos, sem pontos, barra ou traço.
