@@ -10,11 +10,13 @@ public class Clinica : Entity
 
     public string RazaoSocial { get; set; } = string.Empty;
     public string NomeFantasia { get; set; } = string.Empty;
-    public string? Telefone { get; set; }
-    public string? Email { get; set; }
+    public string? Telefone { get; set; } = null;
+    public string? Email { get; set; } = null;
     public bool Ativa { get; set; } = true;
 
-    // Uma clínica tem vários médicos e vários pacientes (1—N).
+    // Clínica N—N Médico: a clínica tem vários médicos, e o mesmo médico pode estar em várias clínicas.
     public List<Medico> Medicos { get; set; } = new();
+
+    // Clínica 1—N Paciente: cada paciente pertence a uma clínica só.
     public List<Paciente> Pacientes { get; set; } = new();
 }

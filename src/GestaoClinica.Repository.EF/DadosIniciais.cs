@@ -13,6 +13,9 @@ public static class DadosIniciais
         if (contexto.Clinicas.Any())
             return;
 
+        // A mesma médica aparece em duas clínicas, para mostrar o relacionamento N—N.
+        var anaSouza = new Medico { Nome = "Ana Souza", Crm = "CRM-SP 123456", Especialidade = "Cardiologia" };
+
         contexto.Clinicas.AddRange(
             new Clinica
             {
@@ -25,7 +28,7 @@ public static class DadosIniciais
                 Ativa = true,
                 Medicos =
                 {
-                    new Medico { Nome = "Ana Souza", Crm = "CRM-SP 123456", Especialidade = "Cardiologia" },
+                    anaSouza,
                     new Medico { Nome = "Bruno Lima", Crm = "CRM-SP 234567", Especialidade = "Ortopedia" }
                 },
                 Pacientes =
@@ -45,6 +48,7 @@ public static class DadosIniciais
                 Ativa = true,
                 Medicos =
                 {
+                    anaSouza,
                     new Medico { Nome = "Eduardo Martins", Crm = "CRM-RJ 345678", Especialidade = "Pediatria" }
                 },
                 Pacientes =

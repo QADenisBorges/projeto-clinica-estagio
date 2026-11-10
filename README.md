@@ -36,7 +36,7 @@ O arquivo `src/GestaoClinica.Api/GestaoClinica.Api.http` tem requisições pront
 
 Atenção a dois comportamentos:
 
-- `DELETE` apaga também os médicos e os pacientes da clínica.
+- `DELETE` apaga também os pacientes da clínica. Os médicos continuam cadastrados, porque um médico pode atender em várias clínicas; só a ligação dele com a clínica excluída é apagada.
 - `PUT` substitui todos os campos. Campo omitido vira nulo, e `ativa` omitida vira `true`.
 
 Erros de regra de negócio, corpo inválido e erros inesperados respondem com um JSON no mesmo formato
@@ -129,6 +129,7 @@ A `NegocioException` também tem um construtor que recebe o código HTTP junto c
 - Controller não tem `try/catch`.
 - O Domain não referencia o Entity Framework nem outro projeto.
 - Médico e Paciente existem só como entidades mapeadas. Ainda não têm service, repositório nem endpoint.
+- Relacionamentos: um médico pode estar em várias clínicas (N—N, tabela de ligação `ClinicaMedico`); um paciente pertence a uma clínica só (1—N).
 
 ## Como criar repositório, service e controller para outra entidade
 
@@ -201,7 +202,7 @@ A API usa o banco **em memória** do Entity Framework. Os dados são recriados t
 Duas diferenças para um banco de verdade, que explicam trechos do código:
 
 - O banco em memória não respeita índice único. Por isso o `ClinicaService` confere se o CNPJ já existe.
-- Ele também não apaga os registros filhos sozinho. Por isso o `ClinicaRepository` carrega médicos e pacientes antes de excluir a clínica.
+- Ele também não apaga os registros filhos sozinho. Por isso o `ClinicaRepository` carrega médicos e pacientes antes de excluir a clínica: assim os pacientes e as ligações com médicos são apagados junto.
 
 Para usar SQL Server com o Entity Framework não basta trocar uma linha. Os passos (também comentados em `DependencyInjection.cs` do `Repository.EF`) são:
 

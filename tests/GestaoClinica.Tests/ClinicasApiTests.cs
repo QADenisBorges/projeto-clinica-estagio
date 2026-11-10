@@ -231,7 +231,7 @@ public class ClinicasApiTests : IDisposable
     }
 
     [Fact]
-    public async Task Excluir_devolve_204_e_remove_a_clinica_com_medicos_e_pacientes()
+    public async Task Excluir_devolve_204_e_remove_a_clinica_com_pacientes_mas_mantem_os_medicos()
     {
         var resposta = await _cliente.DeleteAsync("/api/clinicas/1");
 
@@ -240,9 +240,26 @@ public class ClinicasApiTests : IDisposable
 
         using var escopo = _api.Services.CreateScope();
         var contexto = escopo.ServiceProvider.GetRequiredService<ClinicaDbContext>();
-        Assert.False(await contexto.Medicos.AnyAsync(m => m.ClinicaId == 1));
         Assert.False(await contexto.Pacientes.AnyAsync(p => p.ClinicaId == 1));
-        Assert.True(await contexto.Medicos.AnyAsync(m => m.ClinicaId == 2));
+
+        // Os 4 médicos continuam cadastrados; só a ligação com a clínica 1 foi apagada.
+        var medicos = await contexto.Medicos.Include(m => m.Clinicas).ToListAsync();
+        Assert.Equal(4, medicos.Count);
+        Assert.DoesNotContain(medicos, m => m.Clinicas.Any(c => c.Id == 1));
+        Assert.Contains(medicos, m => m.Nome == "Ana Souza" && m.Clinicas.Any(c => c.Id == 2));
+    }
+
+    [Fact]
+    public async Task Um_medico_pode_estar_em_varias_clinicas()
+    {
+        using var escopo = _api.Services.CreateScope();
+        var contexto = escopo.ServiceProvider.GetRequiredService<ClinicaDbContext>();
+
+        var ana = await contexto.Medicos.Include(m => m.Clinicas).SingleAsync(m => m.Nome == "Ana Souza");
+        var bemEstar = await contexto.Clinicas.Include(c => c.Medicos).SingleAsync(c => c.Id == 2);
+
+        Assert.Equal(new[] { 1, 2 }, ana.Clinicas.Select(c => c.Id).Order());
+        Assert.Equal(2, bemEstar.Medicos.Count);
     }
 
     [Fact]

@@ -23,7 +23,9 @@ public class ClinicaRepository : RepositoryBase<Clinica>, IClinicaRepository
     public override async Task RemoverAsync(Clinica clinica)
     {
         // O banco em memória não apaga os filhos sozinho. Carregando médicos e pacientes,
-        // o EF remove todos junto com a clínica, como um banco de verdade faria (cascade).
+        // o EF apaga junto com a clínica os pacientes dela e as ligações com os médicos,
+        // como um banco de verdade faria (cascade). Os médicos continuam cadastrados,
+        // porque podem atender em outras clínicas.
         await Contexto.Entry(clinica).Collection(c => c.Medicos).LoadAsync();
         await Contexto.Entry(clinica).Collection(c => c.Pacientes).LoadAsync();
 
