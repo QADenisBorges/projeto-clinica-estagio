@@ -1,0 +1,72 @@
+@url = http://localhost:5150
+
+### Listar todas as clínicas (200)
+GET {{url}}/api/clinicas
+
+### Buscar uma clínica que existe (200)
+GET {{url}}/api/clinicas/1
+
+### Buscar uma clínica que não existe (404)
+GET {{url}}/api/clinicas/999
+
+### Criar uma clínica (201) - o CNPJ pode vir com máscara
+POST {{url}}/api/clinicas
+Content-Type: application/json
+
+{
+  "cnpj": "12.345.678/0001-90",
+  "razaoSocial": "Clínica Nova Esperança Ltda",
+  "nomeFantasia": "Nova Esperança",
+  "telefone": "(41) 3030-4000",
+  "email": "contato@novaesperanca.com.br",
+  "ativa": true
+}
+
+### Criar com CNPJ inválido (400)
+POST {{url}}/api/clinicas
+Content-Type: application/json
+
+{
+  "cnpj": "123",
+  "razaoSocial": "Clínica Teste Ltda",
+  "nomeFantasia": "Teste"
+}
+
+### Criar sem razão social (400)
+POST {{url}}/api/clinicas
+Content-Type: application/json
+
+{
+  "cnpj": "98765432000110",
+  "razaoSocial": "",
+  "nomeFantasia": "Teste"
+}
+
+### Criar com CNPJ que já existe (400)
+POST {{url}}/api/clinicas
+Content-Type: application/json
+
+{
+  "cnpj": "11222333000181",
+  "razaoSocial": "Outra Clínica Ltda",
+  "nomeFantasia": "Outra"
+}
+
+### Atualizar uma clínica (200)
+PUT {{url}}/api/clinicas/1
+Content-Type: application/json
+
+{
+  "cnpj": "11222333000181",
+  "razaoSocial": "Clínica Vida Plena Serviços Médicos Ltda",
+  "nomeFantasia": "Vida Plena Centro",
+  "telefone": "(11) 3333-1001",
+  "email": "contato@vidaplena.com.br",
+  "ativa": true
+}
+
+### Excluir uma clínica (204)
+DELETE {{url}}/api/clinicas/3
+
+### Excluir uma clínica que não existe (404)
+DELETE {{url}}/api/clinicas/999
