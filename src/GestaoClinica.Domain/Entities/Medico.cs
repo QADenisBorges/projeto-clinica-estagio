@@ -10,6 +10,7 @@ public class Medico : Entity
     public string Crm { get; set; } = string.Empty;
     public string Especialidade { get; set; } = string.Empty;
 
-    // Um médico pode atender em várias clínicas (N—N).
-    public List<Clinica> Clinicas { get; set; } = new();
+    // Todo médico pertence a uma clínica. (1-N)
+    public int ClinicaId { get; set; }
+    public Clinica? Clinica { get; set; }
 }

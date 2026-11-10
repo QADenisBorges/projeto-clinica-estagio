@@ -14,9 +14,7 @@ public class Clinica : Entity
     public string? Email { get; set; } = null;
     public bool Ativa { get; set; } = true;
 
-    // Clínica N—N Médico: a clínica tem vários médicos, e o mesmo médico pode estar em várias clínicas.
+    // Uma clínica tem vários médicos e vários pacientes (1—N).
     public List<Medico> Medicos { get; set; } = new();
-
-    // Clínica 1—N Paciente: cada paciente pertence a uma clínica só.
     public List<Paciente> Pacientes { get; set; } = new();
 }

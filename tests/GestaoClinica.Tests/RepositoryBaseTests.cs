@@ -64,7 +64,7 @@ public class RepositoryBaseTests : IDisposable
     [Fact]
     public async Task Adicionar_salva_e_preenche_o_id()
     {
-        var novo = new Medico { Nome = "Carla Dias", Crm = "CRM-SP 3", Especialidade = "Pediatria" };
+        var novo = new Medico { Nome = "Carla Dias", Crm = "CRM-SP 3", Especialidade = "Pediatria", ClinicaId = 1 };
 
         await _repositorio.AdicionarAsync(novo);
 

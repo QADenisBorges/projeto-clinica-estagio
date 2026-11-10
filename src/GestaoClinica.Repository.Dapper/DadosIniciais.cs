@@ -9,7 +9,7 @@ public static class DadosIniciais
 {
     // Mesmos tamanhos e relacionamentos da pasta Mappings do Repository.EF.
     // Diferença: aqui o banco não apaga os filhos sozinho (sem ON DELETE CASCADE);
-    // quem apaga os pacientes e as ligações com médicos é o ClinicaRepository, dentro de uma transação.
+    // quem apaga médicos e pacientes é o ClinicaRepository, dentro de uma transação.
     private const string CriarTabelas =
         """
         IF OBJECT_ID('Clinicas') IS NULL
@@ -28,14 +28,8 @@ public static class DadosIniciais
                 Id            INT IDENTITY(1,1) PRIMARY KEY,
                 Nome          NVARCHAR(200) NOT NULL,
                 Crm           NVARCHAR(20)  NOT NULL,
-                Especialidade NVARCHAR(100) NOT NULL
-            );
-
-            -- Tabela de ligação do N—N: cada linha diz "este médico atende nesta clínica".
-            CREATE TABLE ClinicaMedico (
-                ClinicaId INT NOT NULL REFERENCES Clinicas(Id),
-                MedicoId  INT NOT NULL REFERENCES Medicos(Id),
-                PRIMARY KEY (ClinicaId, MedicoId)
+                Especialidade NVARCHAR(100) NOT NULL,
+                ClinicaId     INT NOT NULL REFERENCES Clinicas(Id)
             );
 
             CREATE TABLE Pacientes (
@@ -56,24 +50,15 @@ public static class DadosIniciais
             ('22333444000172', N'Centro Médico Bem Estar S.A.', N'Bem Estar', '(21) 4444-2000', 'atendimento@bemestar.com.br', 1),
             ('33444555000163', N'Clínica Sorriso Odontologia Ltda', N'Sorriso', '(31) 5555-3000', 'contato@clinicasorriso.com.br', 0);
 
-        INSERT INTO Medicos (Nome, Crm, Especialidade) VALUES
-            (N'Ana Souza',       'CRM-SP 123456', N'Cardiologia'),
-            (N'Bruno Lima',      'CRM-SP 234567', N'Ortopedia'),
-            (N'Eduardo Martins', 'CRM-RJ 345678', N'Pediatria'),
-            (N'Helena Costa',    'CRO-MG 45678',  N'Odontologia');
-
-        -- Ana Souza atende em duas clínicas, para mostrar o relacionamento N—N.
-        INSERT INTO ClinicaMedico (ClinicaId, MedicoId)
-        SELECT c.Id, m.Id
+        INSERT INTO Medicos (Nome, Crm, Especialidade, ClinicaId)
+        SELECT m.Nome, m.Crm, m.Especialidade, c.Id
           FROM (VALUES
-                ('11222333000181', 'CRM-SP 123456'),
-                ('11222333000181', 'CRM-SP 234567'),
-                ('22333444000172', 'CRM-SP 123456'),
-                ('22333444000172', 'CRM-RJ 345678'),
-                ('33444555000163', 'CRO-MG 45678')
-               ) AS l (Cnpj, Crm)
-          JOIN Clinicas c ON c.Cnpj = l.Cnpj
-          JOIN Medicos  m ON m.Crm  = l.Crm;
+                (N'Ana Souza',       'CRM-SP 123456', N'Cardiologia', '11222333000181'),
+                (N'Bruno Lima',      'CRM-SP 234567', N'Ortopedia',   '11222333000181'),
+                (N'Eduardo Martins', 'CRM-RJ 345678', N'Pediatria',   '22333444000172'),
+                (N'Helena Costa',    'CRO-MG 45678',  N'Odontologia', '33444555000163')
+               ) AS m (Nome, Crm, Especialidade, Cnpj)
+          JOIN Clinicas c ON c.Cnpj = m.Cnpj;
 
         INSERT INTO Pacientes (Nome, Cpf, DataNascimento, ClinicaId)
         SELECT p.Nome, p.Cpf, p.DataNascimento, c.Id

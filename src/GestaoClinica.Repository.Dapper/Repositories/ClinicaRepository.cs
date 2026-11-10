@@ -85,12 +85,11 @@ public class ClinicaRepository : IClinicaRepository
         using var conexao = _fabrica.Criar();
         await conexao.OpenAsync();
 
-        // Transação: ou apaga a clínica, os pacientes dela e as ligações com médicos, ou não apaga nada.
-        // Os médicos continuam cadastrados, porque podem atender em outras clínicas.
+        // Transação: ou apaga a clínica com médicos e pacientes, ou não apaga nada.
         await using var transacao = await conexao.BeginTransactionAsync();
 
         var parametros = new { clinica.Id };
-        await conexao.ExecuteAsync("DELETE FROM ClinicaMedico WHERE ClinicaId = @Id", parametros, transacao);
+        await conexao.ExecuteAsync("DELETE FROM Medicos WHERE ClinicaId = @Id", parametros, transacao);
         await conexao.ExecuteAsync("DELETE FROM Pacientes WHERE ClinicaId = @Id", parametros, transacao);
         await conexao.ExecuteAsync("DELETE FROM Clinicas WHERE Id = @Id", parametros, transacao);
 
