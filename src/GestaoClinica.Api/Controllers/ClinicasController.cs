@@ -1,6 +1,6 @@
 using GestaoClinica.Api.DTO.Request;
 using GestaoClinica.Api.DTO.Response;
-using GestaoClinica.Domain.Services;
+using GestaoClinica.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoClinica.Api.Controllers;
@@ -12,9 +12,9 @@ namespace GestaoClinica.Api.Controllers;
 [Produces("application/json")]
 public class ClinicasController : ControllerBase
 {
-    private readonly ClinicaService _service;
+    private readonly IClinicaService _service;
 
-    public ClinicasController(ClinicaService service)
+    public ClinicasController(IClinicaService service)
     {
         _service = service;
     }

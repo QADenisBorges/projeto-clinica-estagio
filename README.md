@@ -70,6 +70,7 @@ src/
     Services/              ClinicaService: TODAS as regras de negócio
     Exceptions/            NegocioException e RegistroNaoEncontradoException
     Interfaces/            IClinicaRepository: o que o Domain precisa do banco para clínica
+                           IClinicaService: o que o service de clínica oferece ao controller
       Base/                IRepositoryBase<T>: operações comuns de qualquer repositório
 
   GestaoClinica.Repository.EF/ Conversa com o banco de dados usando Entity Framework
@@ -109,7 +110,7 @@ O Domain não conhece ninguém. Isso é de propósito: as regras de negócio nã
 Exemplo: `POST /api/clinicas`
 
 1. O `ClinicasController` recebe o `ClinicaRequest` e o transforma na entidade `Clinica`.
-2. O `ClinicaService` valida as regras (campos obrigatórios, CNPJ com 14 dígitos, CNPJ não repetido).
+2. O controller chama o `IClinicaService`, e o `ClinicaService` valida as regras (campos obrigatórios, CNPJ com 14 dígitos, CNPJ não repetido).
 3. Se estiver tudo certo, o service chama o `IClinicaRepository`, e o `ClinicaRepository` salva no banco.
 4. O controller transforma a entidade em `ClinicaResponse` e devolve 201.
 
@@ -173,11 +174,11 @@ Use os arquivos de Clínica como modelo. Exemplo para Médico:
    services.AddScoped<IMedicoRepository, MedicoRepository>();
    ```
 
-4. **Service** — `GestaoClinica.Domain/Services/MedicoService.cs`, com as regras de negócio, seguindo o `ClinicaService`. Registre no `Program.cs`: `builder.Services.AddScoped<MedicoService>();`
+4. **Service** — a interface `IMedicoService` em `GestaoClinica.Domain/Interfaces` e a classe `MedicoService` em `GestaoClinica.Domain/Services`, com as regras de negócio, seguindo `IClinicaService` e `ClinicaService`. Registre no `Program.cs`: `builder.Services.AddScoped<IMedicoService, MedicoService>();`
 
 5. **DTOs** — `MedicoRequest` em `GestaoClinica.Api/DTO/Request` e `MedicoResponse` em `GestaoClinica.Api/DTO/Response`.
 
-6. **Controller** — `GestaoClinica.Api/Controllers/MedicosController.cs`, seguindo o `ClinicasController`.
+6. **Controller** — `GestaoClinica.Api/Controllers/MedicosController.cs`, seguindo o `ClinicasController`. Ele recebe o `IMedicoService`, não a classe.
 
 7. **Testes** — siga `ClinicaServiceTests` e `ClinicasApiTests`. As operações herdadas já são testadas em `RepositoryBaseTests`; o repositório novo só precisa de teste próprio para o que ele acrescentar ou trocar.
 

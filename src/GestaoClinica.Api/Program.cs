@@ -1,4 +1,5 @@
 using GestaoClinica.Api.Middlewares;
+using GestaoClinica.Domain.Interfaces;
 using GestaoClinica.Domain.Services;
 using GestaoClinica.Repository.EF;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 // Banco e repositórios: o registro fica no próprio projeto Repository.EF (classe DependencyInjection).
 builder.Services.AddRepository();
 
-builder.Services.AddScoped<ClinicaService>();
+builder.Services.AddScoped<IClinicaService, ClinicaService>();
 
 var app = builder.Build();
 

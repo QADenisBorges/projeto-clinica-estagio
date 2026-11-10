@@ -6,7 +6,7 @@ namespace GestaoClinica.Domain.Services;
 
 // Todas as regras de negócio de clínica moram aqui.
 // Quando uma regra é quebrada, lançamos NegocioException e a API cuida da resposta.
-public class ClinicaService
+public class ClinicaService : IClinicaService
 {
     private readonly IClinicaRepository _repositorio;
 
