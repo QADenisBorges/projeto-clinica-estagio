@@ -4,6 +4,7 @@ namespace GestaoClinica.Domain.Entities;
 
 // O Id vem da classe Entity.
 // Commit do Iago
+// Commit do Guylherme
 
 public class Clinica : Entity
 {
