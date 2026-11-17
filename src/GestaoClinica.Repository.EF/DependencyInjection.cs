@@ -25,10 +25,7 @@ public static class DependencyInjection
 
         // Quem pedir IClinicaRepository recebe ClinicaRepository.
         services.AddScoped<IClinicaRepository, ClinicaRepository>();
-
-        // Repositório novo? Registre aqui, uma linha por entidade. Exemplo:
-        //   services.AddScoped<IMedicoRepository, MedicoRepository>();
-        //   services.AddScoped<IPacienteRepository, PacienteRepository>();
+        services.AddScoped<IMedicoRepository, MedicoRepository>();
 
         return services;
     }

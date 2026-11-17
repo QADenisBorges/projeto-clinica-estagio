@@ -24,7 +24,7 @@ public class GlobalExceptionMiddleware
         // A ordem importa: a exceção filha (404) precisa vir antes da mãe (400).
         catch (RegistroNaoEncontradoException excecao)
         {
-            await ResponderAsync(contexto, StatusCodes.Status404NotFound, excecao.Message);
+            await ResponderAsync(contexto, StatusCodes.Status204NoContent, excecao.Message);
         }
         catch (NegocioException excecao)
         {

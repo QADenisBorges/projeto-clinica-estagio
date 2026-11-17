@@ -2,6 +2,7 @@ using GestaoClinica.Api.Middlewares;
 using GestaoClinica.Domain.Interfaces;
 using GestaoClinica.Domain.Services;
 using GestaoClinica.Repository.EF;
+using GestaoMedico.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRepository();
 
 builder.Services.AddScoped<IClinicaService, ClinicaService>();
+builder.Services.AddScoped<IMedicoService, MedicoService>();
 
 var app = builder.Build();
 
