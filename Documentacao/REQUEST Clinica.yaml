@@ -1,0 +1,140 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Projeto Clinica
+meta:
+  id: wrk_82da7fe79ef14bb4941dca19eca29ecb
+  created: 1794596859684
+  modified: 1794596859684
+  description: ""
+collection:
+  - url: http://localhost:5000/api/clinicas
+    name: Buscar
+    meta:
+      id: req_636fe76cda17476694930406aef5692f
+      created: 1794596874988
+      modified: 1794597390324
+      isPrivate: false
+      description: ""
+      sortKey: -1794596874988
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/api/clinicas/1
+    name: Buscar por ID
+    meta:
+      id: req_13591a2abd444ddfad3746e36115fa5d
+      created: 1794597409567
+      modified: 1794597447968
+      isPrivate: false
+      description: ""
+      sortKey: -1794596874938
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/api/clinicas
+    name: Cadastrar
+    meta:
+      id: req_ddc3168aea1d4459bd84bb0b30501514
+      created: 1794597466255
+      modified: 1794597928308
+      isPrivate: false
+      description: ""
+      sortKey: -1794596874888
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cnpj": "41223255000109",
+          "razaoSocial": "Clínica Revitalize",
+          "nomeFantasia": "Revitalize",
+          "telefone": "75920012326",
+          "email": "clinicarevitalize2026@outlook.com",
+          "ativa": true
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/api/clinicas/1
+    name: Atualizar
+    meta:
+      id: req_af21795d89ca4b6380a7c2e71fc005a6
+      created: 1794598133133
+      modified: 1794598629974
+      isPrivate: false
+      description: ""
+      sortKey: -1794596874838
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cnpj": "11222333000181",
+          "razaoSocial": "Clínica Revitalize",
+          "nomeFantasia": "Revitalize",
+          "telefone": "75920012326",
+          "email": "clinicarevitalize2026@outlook.com",
+          "ativa": true
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5000/api/clinicas/1
+    name: Deletar
+    meta:
+      id: req_28931adfd95042d997bb1de80ac7c388
+      created: 1794598728900
+      modified: 1794598850239
+      isPrivate: false
+      description: ""
+      sortKey: -1794596874788
+    method: DELETE
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_5647ee3e9de46aa7c118e487c7b02ec4645f1e68
+    created: 1794596859716
+    modified: 1794596859716
+environments:
+  name: Base Environment
+  meta:
+    id: env_5647ee3e9de46aa7c118e487c7b02ec4645f1e68
+    created: 1794596859707
+    modified: 1794596859707
+    isPrivate: false
